@@ -3,7 +3,7 @@ package Email::MIME::Attachment::Stripper;
 use strict;
 use warnings;
 
-our $VERSION = '1.2';
+our $VERSION = '1.3';
 
 use Carp;
 
@@ -27,9 +27,18 @@ message. These are then available separately.
 
 =head2 new 
 
-	my $stripper = Email::MIME::Attachment::Stripper->new($mail);
+	my $stripper = Email::MIME::Attachment::Stripper->new($mail, %args);
 
-This should be instantiated with a Email::MIME object.
+This should be instantiated with a Email::MIME object. Current arguments
+supported:
+
+=over 3
+
+=item force_filename
+
+Try harder to get a filename, making one up if necessary.
+
+=back
 
 =head2 message
 
@@ -55,9 +64,9 @@ terms as Tony's original module.
 =cut
 
 sub new {
-	my ($class, $msg) = @_;
+	my ($class, $msg, %args) = @_;
 	croak "Need a message" unless eval { $msg->isa("Email::MIME") };
-	bless { _msg => $msg }, $class;
+	bless { %args, _msg => $msg }, $class;
 }
 
 sub message {
@@ -142,6 +151,10 @@ sub _filename_for {
     if (my $cd = $part->header("Content-Disposition")) {
         my $parsed = Email::MIME::ContentType::parse_content_type("foo/$cd");
         return $fn if $fn = $parsed->{attributes}{filename};
+    }
+    if ($self->{force_filename}) {
+        return Email::MIME->invent_filename($part->{ct}->{discrete} ."/". 
+                                            $part->{ct}->{composite})
     }
     return "";
 }

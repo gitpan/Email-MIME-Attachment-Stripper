@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 36;
+use Test::More tests => 38;
 
 use_ok "Email::MIME::Attachment::Stripper";
 use Email::MIME;
@@ -73,4 +73,8 @@ $message = do { local $/; <IN>; };
 	isa_ok $detached => "Email::MIME";
 	ok !($detached->parts > 1), "Message no longer has attachments";
     like($detached->body, qr/pointless/);
+    is(($strp->attachments)[1]->{filename}, "", "No filename");
+	$msg = Email::MIME->new($message);
+	my $strp2 = Email::MIME::Attachment::Stripper->new($msg, force_filename=>1);
+    like(($strp2->attachments)[1]->{filename}, qr/png/, "Got filename");
 }

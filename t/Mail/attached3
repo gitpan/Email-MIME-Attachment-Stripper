@@ -25,7 +25,7 @@ Content-Transfer-Encoding: quoted-printable
 Foo bar baz=0A
 --n8g4imXOkfNTN/H1
 Content-Type: image/png
-Content-Disposition: attachment; filename="tree.png"
+Content-Disposition: attachment
 Content-Transfer-Encoding: base64
 
 iVBORw0KGgoAAAANSUhEUgAAAcEAAAFrBAMAAABbEi9TAAAAJFBMVEX///4AAP//AABfX1+f

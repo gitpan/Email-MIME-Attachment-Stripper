@@ -13,7 +13,7 @@ WriteMakefile(
 	VERSION_FROM  => $LOCN,
 	PREREQ_PM     => {
 		'Test::More' => 0.45,
-		'Email::MIME' => 1.3,
+		'Email::MIME' => 1.8,
         'Email::MIME::Encodings' => 1.1
 	},
 	dist => {

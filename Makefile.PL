@@ -7,15 +7,15 @@ my $PACKAGE = "Email::MIME::Attachment::Stripper";
 my $LOCN    = "lib/Email/MIME/Attachment/Stripper.pm";
 
 WriteMakefile(
-	AUTHOR        => 'Simon Cozens <simon@cpan.org>',
+	AUTHOR        => 'Casey West <casey@geeknest.com>',
 	NAME          => $PACKAGE,
 	ABSTRACT_FROM => $LOCN,
 	VERSION_FROM  => $LOCN,
-	PREREQ_PM     => {
-		'Test::More' => 0.45,
-		'Email::MIME' => 1.8,
-        'Email::MIME::Encodings' => 1.1
-	},
+    PREREQ_PM     => {
+                      'Email::MIME' => '1.82',
+                      'Email::MIME::ContentType' => '1.0',
+                      'Email::MIME::Modifier' => '1.41',
+                     },
 	dist => {
 		COMPRESS     => 'gzip -9',
 		SUFFIX       => '.gz',

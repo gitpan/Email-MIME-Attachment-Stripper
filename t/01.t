@@ -70,6 +70,7 @@ $message = do { local $/; <IN>; };
 	isa_ok $strp => "Email::MIME::Attachment::Stripper";
 
 	ok my $detached = $strp->message, "Get detached message";
+    #use Data::Dumper;print Dumper $detached->as_string;
 	isa_ok $detached => "Email::MIME";
 	ok !($detached->parts > 1), "Message no longer has attachments";
     like($detached->body, qr/pointless/);

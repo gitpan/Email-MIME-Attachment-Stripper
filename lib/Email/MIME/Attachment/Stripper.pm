@@ -3,8 +3,11 @@ package Email::MIME::Attachment::Stripper;
 use strict;
 use warnings;
 
-our $VERSION = '1.3';
+our $VERSION = '1.31';
 
+use Email::MIME;
+use Email::MIME::Modifier;
+use Email::MIME::ContentType;
 use Carp;
 
 =head1 NAME
@@ -54,6 +57,12 @@ alter both the body and the header of the message.
 This returns a list of all the attachments we found in the message,
 as a hash of { filename, content_type, payload }.
 
+=head1 AUTHOR
+
+Casey West <casey@geeknest.com>
+
+http://pep.kwiki.org
+
 =head1 CREDITS AND LICENSE
 
 This module is incredibly closely derived from Tony Bowden's
@@ -64,99 +73,58 @@ terms as Tony's original module.
 =cut
 
 sub new {
-	my ($class, $msg, %args) = @_;
-	croak "Need a message" unless eval { $msg->isa("Email::MIME") };
-	bless { %args, _msg => $msg }, $class;
+	my ($class, $message, %attr) = @_;
+	$message = Email::MIME->new($message) if !ref($message);
+
+	croak "Need a message" unless ref($message) || do {
+	    require Email::Abstract;
+	    $message = Email::Abstract->cast($message, 'Email::MIME');
+	};
+	bless { message => $message, attr => \%attr }, $class;
 }
 
 sub message {
-	my $self = shift;
-	$self->_detach_all unless exists $self->{_atts};
-	return $self->{_msg};
+	my ($self) = @_;
+	$self->_detach_all unless exists $self->{attach};
+	return $self->{message};
 }
 
 sub attachments {
 	my $self = shift;
-	$self->_detach_all unless exists $self->{_atts};
-	return $self->{_atts} ? @{ $self->{_atts} } : ();
+	$self->_detach_all unless exists $self->{attach};
+	return $self->{attach} ? @{ $self->{attach} } : ();
 }
 
 sub _detach_all {
-	my $self = shift;
-	my $mm   = $self->{_msg};
-
-	$self->{_atts} = [];
-	$self->{_body} = [];
-
-	$self->_handle_part($mm);
-	$mm->Email::Simple::body_set(join "",@{$self->{_body}});
-    $mm->fill_parts;
-	$self;
-}
-
-sub _handle_part {
-	my ($self, $mm) = @_;
-	foreach my $part ($mm->parts) {
-		if ($self->_is_inline_text($part)) {
-			$self->_gather_body($part);
-		} elsif ($self->_should_recurse($part)) {
-			$self->_handle_part($part);
-		} else {
-			$self->_gather_att($part);
-		}
-	}
-}
-
-sub _gather_body {    # Gen 25:8
-	my ($self, $part) = @_;
-	push @{ $self->{_body} }, $part->body;
-}
-
-sub _gather_att {
-	my ($self, $part) = @_;
-
-	push @{ $self->{_atts} },
-		{
-		content_type => $part->{ct}{discrete}."/".$part->{ct}{composite},
-		payload      => $part->body,
-		filename     => $self->_filename_for($part),
-		};
-}
-
-sub _should_recurse {
-	my ($self, $part) = @_;
-	return 0 if lc($part->header("Content-Type") =~ m{message/rfc822});
-	return 1 if $part->parts > 1;
-	return 0;
-}
-
-sub _is_inline_text {
-	my ($self, $part) = @_;
-	if ($part->header("Content-Type") =~ m{text/plain}i) {
-		my $disp = $part->header("Content-Disposition");
-		return 1 if $disp && $disp =~ /inline/;
-		return 0 if $self->_filename_for($part);
-		return 1;
-	}
-    if (!$part->header("Content-Type") and !$part->header("Content-Disposition")) {
-        return 1; # Probably not even a MIME message
+    my ($self, $part) = @_;
+    $part ||= $self->{message};
+    return if $part->parts == 1;
+    
+    my @attach = ();
+    my @keep   = ();
+    foreach ( $part->parts ) {
+        my $ct = $_->content_type                  || 'text/plain';
+        my $dp = $_->header('Content-Disposition') || 'inline';
+        
+        push(@keep, $_) and next
+          if $ct =~ m[text/plain] && $dp =~ /inline/;
+        push @attach, $_;
+        $self->_detach_all($_) if $_->parts > 1;
     }
-	return 0;
-}
-
-sub _filename_for {
-	my ($self, $part) = @_;
-    my $fn;
-    return $fn if $fn = $part->{ct}{attributes}{"filename"};
-    if (my $cd = $part->header("Content-Disposition")) {
-        my $parsed = Email::MIME::ContentType::parse_content_type("foo/$cd");
-        return $fn if $fn = $parsed->{attributes}{filename};
-    }
-    if ($self->{force_filename}) {
-        return Email::MIME->invent_filename($part->{ct}->{discrete} ."/". 
-                                            $part->{ct}->{composite})
-    }
-    return "";
+    $part->parts_set(\@keep);
+    push @{$self->{attach}}, map {
+        my $content_type = parse_content_type($_->content_type);
+        {
+            content_type => join(
+                                 '/', 
+                                 @{$content_type}{qw[discrete composite]}
+                                ),
+            payload      => $_->body,
+            filename     =>   $self->{attr}->{force_filename}
+                            ? $_->filename(1)
+                            : ($_->filename || ''),
+        }
+    } @attach;
 }
 
 1;

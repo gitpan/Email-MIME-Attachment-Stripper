@@ -3,7 +3,7 @@ package Email::MIME::Attachment::Stripper;
 use strict;
 use warnings;
 
-our $VERSION = '1.1';
+our $VERSION = '1.2';
 
 use Carp;
 
@@ -129,6 +129,9 @@ sub _is_inline_text {
 		return 0 if $self->_filename_for($part);
 		return 1;
 	}
+    if (!$part->header("Content-Type") and !$part->header("Content-Disposition")) {
+        return 1; # Probably not even a MIME message
+    }
 	return 0;
 }
 

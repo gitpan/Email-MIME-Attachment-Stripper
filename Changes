@@ -1,5 +1,8 @@
 Revision history for Mail::Message::Attachment::Stripper
 
+1.2   Sun Jul 11 17:24:34 BST 2004
+  - Work OK on things that aren't even MIME messages.
+
 1.1   Sat Jul  3 17:52:40 BST 2004
   - We never checked the ->body! Horrors!
 

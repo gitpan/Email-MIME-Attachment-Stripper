@@ -1,4 +1,5 @@
 t/01.t
+t/02.t
 t/Mail/attached1
 t/Mail/attached2
 t/Mail/attached3
@@ -7,5 +8,4 @@ Changes
 MANIFEST.SKIP
 Makefile.PL
 MANIFEST
-Makefile
 META.yml                                 Module meta-data (added by MakeMaker)

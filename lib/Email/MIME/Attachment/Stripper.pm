@@ -3,7 +3,7 @@ package Email::MIME::Attachment::Stripper;
 use strict;
 use warnings;
 
-our $VERSION = '1.0';
+our $VERSION = '1.1';
 
 use Carp;
 
@@ -80,7 +80,7 @@ sub _detach_all {
 	$self->{_body} = [];
 
 	$self->_handle_part($mm);
-	$mm->Email::Simple::body($self->{_body});
+	$mm->Email::Simple::body_set(join "",@{$self->{_body}});
     $mm->fill_parts;
 	$self;
 }

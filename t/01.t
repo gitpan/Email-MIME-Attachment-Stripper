@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests =>28;
+use Test::More tests => 36;
 
 use_ok "Email::MIME::Attachment::Stripper";
 use Email::MIME;
@@ -59,3 +59,18 @@ $message = do { local $/; <IN>; };
 }
 
 
+open IN, "t/Mail/attached3" or die "Can't read mail";
+$message = do { local $/; <IN>; };
+{
+	my $msg = Email::MIME->new($message);
+	isa_ok $msg => "Email::MIME";
+	ok $msg->parts >1, "Message has attachments";
+
+	ok my $strp = Email::MIME::Attachment::Stripper->new($msg), "Get stripper";
+	isa_ok $strp => "Email::MIME::Attachment::Stripper";
+
+	ok my $detached = $strp->message, "Get detached message";
+	isa_ok $detached => "Email::MIME";
+	ok !($detached->parts > 1), "Message no longer has attachments";
+    like($detached->body, qr/pointless/);
+}

@@ -1,6 +1,7 @@
 t/01.t
 t/Mail/attached1
 t/Mail/attached2
+t/Mail/attached3
 lib/Email/MIME/Attachment/Stripper.pm
 Changes
 MANIFEST.SKIP

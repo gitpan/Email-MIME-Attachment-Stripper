@@ -54,11 +54,11 @@ AR_STATIC_ARGS = cr
 DIRFILESEP = /
 NAME = Email::MIME::Attachment::Stripper
 NAME_SYM = Email_MIME_Attachment_Stripper
-VERSION = 1.0
+VERSION = 1.1
 VERSION_MACRO = VERSION
-VERSION_SYM = 1_0
+VERSION_SYM = 1_1
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 1.0
+XS_VERSION = 1.1
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -239,7 +239,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = all tardist
 DISTNAME = Email-MIME-Attachment-Stripper
-DISTVNAME = Email-MIME-Attachment-Stripper-1.0
+DISTVNAME = Email-MIME-Attachment-Stripper-1.1
 
 
 # --- MakeMaker macro section:
@@ -416,7 +416,7 @@ metafile :
 	$(NOECHO) $(ECHO) '# http://module-build.sourceforge.net/META-spec.html' > META_new.yml
 	$(NOECHO) $(ECHO) '#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#' >> META_new.yml
 	$(NOECHO) $(ECHO) 'name:         Email-MIME-Attachment-Stripper' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version:      1.0' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version:      1.1' >> META_new.yml
 	$(NOECHO) $(ECHO) 'version_from: lib/Email/MIME/Attachment/Stripper.pm' >> META_new.yml
 	$(NOECHO) $(ECHO) 'installdirs:  site' >> META_new.yml
 	$(NOECHO) $(ECHO) 'requires:' >> META_new.yml
@@ -699,7 +699,7 @@ testdb_static :: testdb_dynamic
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd:
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="1,0,0,0">' > $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="1,1,0,0">' > $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <TITLE>$(DISTNAME)</TITLE>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>Strip the attachments from a mail</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>Simon Cozens &lt;simon@cpan.org&gt;</AUTHOR>' >> $(DISTNAME).ppd

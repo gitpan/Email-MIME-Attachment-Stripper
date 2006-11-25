@@ -3,7 +3,7 @@ package Email::MIME::Attachment::Stripper;
 use strict;
 use warnings;
 
-our $VERSION = '1.311';
+our $VERSION = '1.312';
 
 use Email::MIME;
 use Email::MIME::Modifier;
@@ -13,6 +13,12 @@ use Carp;
 =head1 NAME
 
 Email::MIME::Attachment::Stripper - Strip the attachments from a mail
+
+=head1 VERSION
+
+version 1.312
+
+  $id$
 
 =head1 SYNOPSIS
 
@@ -61,7 +67,7 @@ as a hash of { filename, content_type, payload }.
 
 This module is maintained by the Perl Email Project
 
-  L<http://emailproject.perl.org/wiki/Email::MIME::Attachment::Stripper>
+L<http://emailproject.perl.org/wiki/Email::MIME::Attachment::Stripper>
 
 =head1 AUTHOR
 

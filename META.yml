@@ -1,16 +1,16 @@
 --- #YAML:1.0
 name:                Email-MIME-Attachment-Stripper
-version:             1.313
+version:             1.314
 abstract:            Strip the attachments from a mail
 license:             perl
-generated_by:        ExtUtils::MakeMaker version 6.31
+generated_by:        ExtUtils::MakeMaker version 6.32
 distribution_type:   module
 requires:     
     Email::MIME:                   1.82
     Email::MIME::ContentType:      1.0
-    Email::MIME::Modifier:         1.41
+    Email::MIME::Modifier:         1.442
 meta-spec:
     url:     http://module-build.sourceforge.net/META-spec-v1.2.html
     version: 1.2
 author:
-    - Casey West <casey@geeknest.com>
+    - Ricardo SIGNES <rjbs@cpan.org>

@@ -3,7 +3,7 @@ package Email::MIME::Attachment::Stripper;
 use strict;
 use warnings;
 
-our $VERSION = '1.313';
+our $VERSION = '1.314';
 
 use Email::MIME;
 use Email::MIME::Modifier;
@@ -16,7 +16,7 @@ Email::MIME::Attachment::Stripper - Strip the attachments from a mail
 
 =head1 VERSION
 
-version 1.313
+version 1.314
 
   $id$
 
@@ -24,8 +24,8 @@ version 1.313
 
 	my $stripper = Email::MIME::Attachment::Stripper->new($mail);
 
-	my Email::MIME $msg = $stripper->message;
-	my @attachments       = $stripper->attachments;
+	my $msg = $stripper->message;
+	my @attachments = $stripper->attachments;
 
 =head1 DESCRIPTION
 
@@ -51,7 +51,7 @@ Try harder to get a filename, making one up if necessary.
 
 =head2 message
 
-	my Email::MIME $msg = $stripper->message;
+	my $email_mime = $stripper->message;
 
 This returns the message with all the attachments detached. This will
 alter both the body and the header of the message.
@@ -71,7 +71,9 @@ L<http://emailproject.perl.org/wiki/Email::MIME::Attachment::Stripper>
 
 =head1 AUTHOR
 
-Casey West <casey@geeknest.com>
+Currently maintained by Ricardo SIGNES <rjbs@cpan.org>
+
+Written by Casey West <casey@geeknest.com>
 
 =head1 CREDITS AND LICENSE
 

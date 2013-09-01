@@ -1,20 +1,24 @@
 Changes
-lib/Email/MIME/Attachment/Stripper.pm
 LICENSE
+MANIFEST
+META.json
+META.yml
 Makefile.PL
-MANIFEST			This list of files
 README
+dist.ini
+lib/Email/MIME/Attachment/Stripper.pm
+t/00-compile.t
+t/000-report-versions-tiny.t
 t/01.t
 t/02.t
-t/altern.t
 t/Mail/altern.msg
 t/Mail/attached1
 t/Mail/attached2
 t/Mail/attached3
 t/Mail/attached4
 t/Mail/mixed.msg
+t/altern.t
 t/mixed.t
 t/nested-parts.t
-t/pod-coverage.t
-t/pod.t
-META.yml                                 Module meta-data (added by MakeMaker)
+xt/release/changes_has_content.t
+xt/release/pod-syntax.t
